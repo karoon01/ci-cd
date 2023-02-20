@@ -1,3 +1,5 @@
+#!/bin/bash
+echo ""
 runtime: nodejs
 env: flex
 service: $GCLOUD_APP_SERVICE
