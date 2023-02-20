@@ -2,10 +2,17 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
-orbs:
-  node: circleci/node@5.1.0
-
 jobs:
+  test:
+    docker:
+      - image: circleci/node:19.6.1
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          name: Test
+          command: npm run test
   build:
     docker:
       - image: circleci/node:19.6.1
@@ -15,14 +22,6 @@ jobs:
       - run:
           name: Build Project
           command: npm run build
-  test:
-    steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: npm
-      - run:
-          name: Test
-          command: npm run test
   deploy:
     docker:
       - image: google/cloud-sdk
@@ -51,15 +50,9 @@ workflows:
               only: main
       - build:
           name: build
-          filters:
-            branches:
-              only: main
           requires:
             - test
       - deploy:
-          name: build
-          filters:
-            branches:
-              only: main
+          name: deploy
           requires:
             - build
