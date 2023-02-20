@@ -11,20 +11,21 @@ jobs:
     docker:
       - image: google/cloud-sdk
     working_directory: ~/repo
-  steps:
-    - checkout
-    - run:
-        name: Create app.yaml
-        command: chmod +x app.yaml.sh && ./app.yaml.sh > ./app.yaml
-    - run: Set uo GCLoud
-      command: |
-        echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud auth activate-service-account --key-file=-
-                      gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-                      gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+    steps:
+      - checkout
+      - run:
+          name: Create app.yaml
+          command: chmod +x app.yaml.sh && ./app.yaml.sh > ./app.yaml
+      - run:
+          name: Set up GCloud
+          command: |
+            echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud auth activate-service-account --key-file=-
+              gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+              gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
   test:
     executor:
       name: node/default
-      tag: '18.12.1'
+      tag: '16.17.1'
     steps:
       - checkout
       - run:
@@ -38,20 +39,20 @@ workflows:
   deploy:
     jobs:
       - test:
-        name: test
-        filters:
-          branches:
-            only:
-              - main
-              - dev
+          name: test
+          filters:
+            branches:
+              only:
+                - main
+                - dev
       - deploy:
-        name: deploy-staging
-        requires:
-          - test
-        post-steps:
-          - run:
-              name: Deploy app
-              command: gcloud app deploy app.yaml
-        filters:
-          branches:
-            only: main
+          name: deploy-staging
+          requires:
+            - test
+          post-steps:
+            - run:
+                name: Deploy app
+                command: gcloud app deploy app.yaml
+          filters:
+            branches:
+              only: main
