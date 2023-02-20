@@ -7,8 +7,6 @@ orbs:
 
 jobs:
   test:
-    docker:
-      - image: circleci/node:19.6.1
     steps:
       - checkout
       - node/install-packages:
@@ -17,8 +15,6 @@ jobs:
           name: Test
           command: npm run test
   build:
-    docker:
-      - image: circleci/node:19.6.1
     steps:
       - checkout
       - run: npm install
