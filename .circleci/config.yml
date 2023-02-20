@@ -24,7 +24,7 @@ jobs:
   test:
     executor:
       name: node/default
-      tag: '19.6.1'
+      tag: '16.17.1'
     steps:
       - checkout
       - run:
