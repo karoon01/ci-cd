@@ -1,7 +1,7 @@
 #!/bin/bash
 echo """
 runtime: nodejs
-env: flex
+env: standard
 service: $GCLOUD_APP_SERVICE
 resources:
   cpu: 2

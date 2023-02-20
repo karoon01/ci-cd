@@ -6,16 +6,6 @@ orbs:
   node: circleci/node@5.1.0
 
 jobs:
-  test:
-    docker:
-      - image: cimg/node:19.6.1
-    steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: npm
-      - run:
-          name: Test
-          command: npm run test
   deploy:
     docker:
       - image: google/cloud-sdk
@@ -23,26 +13,44 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Configure Google Cloud SDK
+          name: Create app.yaml
+          command: chmod +x app.yaml.sh && ./app.yaml.sh > ./app.yaml
+      - run:
+          name: Set up GCloud
           command: |
             echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud auth activate-service-account --key-file=-
               gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
               gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+  test:
+    executor:
+      name: node/default
+      tag: '16.17.1'
+    steps:
+      - checkout
       - run:
-          name: Deploy
+          name: Run tests
           command: |
-            gcloud app deploy app.yaml
-            gcloud app browse
-
+            if [[ ! -z $CIRCLE_PULL_REQUEST ]] ; then
+              npm test
+            fi
 workflows:
-  build-and-deploy:
+  deploy:
     jobs:
       - test:
           name: test
           filters:
             branches:
-              only: main
+              only:
+                - main
+                - dev
       - deploy:
-          name: deploy
+          name: deploy-staging
           requires:
             - test
+          post-steps:
+            - run:
+                name: Deploy app
+                command: gcloud app deploy app.yaml
+          filters:
+            branches:
+              only: main
