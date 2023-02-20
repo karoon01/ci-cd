@@ -2,25 +2,56 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+orbs:
+  node: circleci/node@5.1.0
+
+#Jobs
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+  deploy:
     docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+      - image: google/cloud-sdk
+    working_directory: ~/repo
+  steps:
+    - checkout
+    - run:
+        name: Create app.yaml
+        command: chmod +x app.yaml.sh && ./app.yaml.sh > ./app.yaml
+    - run: Set uo GCLoud
+      command: |
+        echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud auth activate-service-account --key-file=-
+                      gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+                      gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+  test:
+    executor:
+      name: node/default
+      tag: '18.12.1'
     steps:
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: Run tests
+          command: |
+            if [[ ! -z $CIRCLE_PULL_REQUEST ]] ; then
+              npm test
+            fi
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  deploy:
     jobs:
-      - say-hello
+      - test:
+        name: test
+        filters:
+          branches:
+            only:
+              - main
+              - dev
+      - deploy:
+        name: deploy-staging
+        requires:
+          - test
+        post-steps:
+          - run:
+              name: Deploy app
+              command: gcloud app deploy app.yaml
+        filters:
+          branches:
+            only: main
