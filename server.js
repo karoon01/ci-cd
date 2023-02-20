@@ -1,14 +1,14 @@
 const express = require('express')
 const rootRouter = require('./routes/index')
 
-const app = express()
+const server = express()
 
-app.use('/api/v1', rootRouter)
+server.use('/api/v1', rootRouter)
 
 const PORT = process.env.PORT ?? 3000
 
 const start = async () => {
-  app.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`Server has been started at port: ${PORT}`)
   })
 }
