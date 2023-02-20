@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "engines": {
-    "node": "18.12.1",
-    "npm": "8.19.2"
+    "node": "19.6.1",
+    "npm": "9.4.0"
   },
   "scripts": {
     "start": "node dist/server.js",

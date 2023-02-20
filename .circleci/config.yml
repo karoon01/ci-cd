@@ -24,7 +24,7 @@ jobs:
   test:
     executor:
       name: node/default
-      tag: '18.12.1'
+      tag: '19.6.1'
     steps:
       - checkout
       - run:
