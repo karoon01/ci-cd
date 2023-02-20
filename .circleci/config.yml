@@ -16,15 +16,6 @@ jobs:
       - run:
           name: Test
           command: npm run test
-  build:
-    docker:
-      - image: cimg/node:19.6.1
-    steps:
-      - checkout
-      - run: npm install
-      - run:
-          name: Build Project
-          command: npm run build
   deploy:
     docker:
       - image: google/cloud-sdk
@@ -51,10 +42,6 @@ workflows:
           filters:
             branches:
               only: main
-      - build:
-          name: build
-          requires:
-            - test
       - deploy:
           name: deploy
           requires:
