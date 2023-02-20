@@ -1,6 +1,6 @@
 #!/bin/bash
 echo """
-runtime: nodejs
+runtime: nodejs16
 env: standard
 service: $GCLOUD_APP_SERVICE
 resources:
