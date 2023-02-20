@@ -45,4 +45,4 @@ workflows:
       - deploy:
           name: deploy
           requires:
-            - build
+            - test
