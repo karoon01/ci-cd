@@ -15,7 +15,6 @@ jobs:
           cache-path: ~/project/node_modules
           override-ci-command: npm install
       - run: npm test
-
   deploy:
     docker:
       - image: google/cloud-sdk:alpine
