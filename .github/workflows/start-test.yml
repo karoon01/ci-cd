@@ -3,44 +3,14 @@ name: test
 on: [push, pull_request]
 
 jobs:
-  test:
-    name: Run Tests
+  build:
+    name: Build & Test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Run Tests
-        run: npm test
-
-      - name: Set Status Check
-        uses: peter-evans/create-pull-request@v4
+      - uses: actions/checkout@v3
+      - name: Test App
+        uses: actions/setup-node@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          state: success
-          description: "All tests passed"
-          context: "tests"
-
-      - name: Generate Badge
-        run: |
-          URL="https://img.shields.io/badge/tests-passing-brightgreen"
-          MARKDOWN="[![Tests Passing]($URL)]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY)"
-          echo ::set-output name=badge::$MARKDOWN
-        id: generate_badge
-
-  report:
-    needs: test
-    name: Report Test Results
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get Badge
-        run: echo ::set-output name=badge::"${{ needs.test.outputs.badge }}"
-
-      - name: Comment on PR
-        uses: unsplash/comment-on-pr@v1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          message: ${{ needs.test.outputs.badge }}
+          node-version: '18.x'
+      - run: npm ci
+      - run: npm test
