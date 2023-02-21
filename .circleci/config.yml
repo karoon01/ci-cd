@@ -1,0 +1,51 @@
+version: 2.1
+
+orbs:
+  gcp-gcr: circleci/gcp-gcr@0.6.1
+  cloudrun: circleci/gcp-cloud-run@1.0.0
+
+jobs:
+  build_test:
+    docker:
+      - image: cimg/node:18.14.1
+    steps:
+      - checkout
+      - run: sudo npm install -g npm@latest
+      - node/install-packages:
+          cache-path: ~/project/node_modules
+          override-ci-command: npm install
+      - run: npm test
+
+  deploy:
+    docker:
+      - image: google/cloud-sdk:alpine
+    steps:
+      - checkout
+      - run:
+          name: Configure gcloud
+          command: |
+            echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud auth activate-service-account --key-file=-
+            gcloud config set project ${PROJECT_ID}
+            gcloud config set run/region ${REGION}
+            gcloud auth configure-docker
+      - run:
+          name: Build and tag Docker image
+          command: |
+            docker build -t gcr.io/${PROJECT_ID}/${APP_NAME}:${CIRCLE_SHA1} .
+            docker tag gcr.io/${PROJECT_ID}/${APP_NAME}:${CIRCLE_SHA1} gcr.io/${PROJECT_ID}/${APP_NAME}:latest
+      - run:
+          name: Push Docker image to Container Registry
+          command: |
+            docker push gcr.io/${PROJECT_ID}/${APP_NAME}:${CIRCLE_SHA1}
+            docker push gcr.io/${PROJECT_ID}/${APP_NAME}:latest
+      - run:
+          name: Deploy to Cloud Run
+          command: |
+            gcloud run deploy ${APP_NAME} --region $REGION --image gcr.io/${PROJECT_ID}/${APP_NAME}:${CIRCLE_SHA1} --platform managed --allow-unauthenticated --project ${PROJECT_ID}
+workflows:
+  build_test_deploy:
+    jobs:
+      - build_test
+      - deploy:
+          requires:
+            - build_test
