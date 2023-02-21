@@ -23,9 +23,12 @@ jobs:
             fi
   deploy:
     docker:
-      - image: google/cloud-sdk:alpine
+      - image: cimg/node:18.14.1
     steps:
       - checkout
+      - run:
+          name: Install dependencies
+          command: npm install
       - run:
           name: Configure gcloud
           command: |
