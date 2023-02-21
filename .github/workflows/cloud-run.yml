@@ -1,11 +1,15 @@
 name: cloudrun-app
-#Test
 
 on:
   push:
     branches:
       - dev
       - main
+
+env:
+  PROJECT_ID: ${{ secrets.CLOUD_RUN_PROJECT_NAME }}
+  REGION: eu-west1
+  REPO_NAME: cloudrun-app
 
 jobs:
   build-and-deploy:
@@ -30,14 +34,14 @@ jobs:
 
       - name: Build and tag the docker image
         run: |-
-          docker build . --tag gcr.io/${{ secrets.CLOUD_RUN_PROJECT_NAME }}/cloudrun-app:latest
+          docker build . --tag gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA
       - name: Push the image to the Google Container Registry (GCR)
         run: |-
-          docker push gcr.io/${{ secrets.CLOUD_RUN_PROJECT_NAME }}/cloudrun-app:latest
+          docker push gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA
       - name: Deploy
         run: |-
-          gcloud run deploy cloudrun-app \
-          --region eu-west1 \
-          --image gcr.io/${{ secrets.CLOUD_RUN_PROJECT_NAME }}/cloudrun-app:latest \
+          gcloud run deploy $REPO_NAME \
+          --region $REGION \
+          --image gcr.io/$PROJECT_ID/$REPO_NAME:$GITHUB_SHA \
           --platform "managed" \
           --quiet
