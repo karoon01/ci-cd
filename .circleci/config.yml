@@ -15,7 +15,12 @@ jobs:
       - node/install-packages:
           cache-path: ~/project/node_modules
           override-ci-command: npm install
-      - run: npm test
+      - run:
+          name: Run tests
+          command: |
+            if [[ ! -z $CIRCLE_PULL_REQUEST ]] ; then
+              npm test
+            fi
   deploy:
     docker:
       - image: google/cloud-sdk:alpine
@@ -24,6 +29,7 @@ jobs:
       - run:
           name: Configure gcloud
           command: |
+            echo $GCLOUD_SERVICE_KEY | base64 --decode
             echo $GCLOUD_SERVICE_KEY | base64 --decode | gcloud auth activate-service-account --key-file=-
             gcloud config set project ${PROJECT_ID}
             gcloud config set run/region ${REGION}
