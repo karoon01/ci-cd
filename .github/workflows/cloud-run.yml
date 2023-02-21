@@ -8,7 +8,7 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.CLOUD_RUN_PROJECT_NAME }}
-  REGION: eu-west1
+  REGION: europe-west1
   REPO_NAME: cloudrun-app
 
 jobs:
@@ -44,4 +44,5 @@ jobs:
           --region $REGION \
           --image gcr.io/$PROJECT_ID/$REPO_NAME:latest \
           --platform "managed" \
-          --quiet
+          --allow-unauthenticated \
+          --project $PROJECT_ID
