@@ -7,7 +7,7 @@ on:
       - main
 
 env:
-  PROJECT_ID: $ {{ secrets.CLOUD_RUN_PROJECT_NAME }}
+  PROJECT_ID: ${{ secrets.CLOUD_RUN_PROJECT_NAME }}
   REGION: eu-west1
   REPO_NAME: cloudrun-app
 
