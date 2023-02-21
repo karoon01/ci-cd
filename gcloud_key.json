@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "cicd-cloudrun",
+  "private_key_id": "2822d9d77874aa61728265b634bc9e62622d6386",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC5GnRULFtyI+fE\nKNUkR10sTnaibVxbpGvR9QJS3cbZ9K5OJfZXfGADLl4lBHFqGzvX/oeLWq9GyUVZ\nrdpm+GhL/Tx7r26qOXny0uN1poic/7Jznhaa/kI5uiyTCpNKrbGn4gCMrC1QND0B\nSwafMYPY3iTEZGBKhnuDR5asYcIFI0EuLK6kLgqSqERUzKMZBbBgFl/oZFcOAhQw\nJ+j1dOQk5RqZNxCgqluGDaRrcgAV7UfDkzWVFrbjlJyRICIWYSEbSWMhWOdqqnco\n2VZk53qqbPvWNI6eryTxf3KrT8X2Q7elENRKlmTrwBdatB/a77ssYDm2RPSOGUaF\np/DG/b6TAgMBAAECggEAQalwuqtBhSvXe25Ara3jD2SGEPhaWufol4IiYOLrN0Xk\nzzQIPuCP7pD0NI1u7gTbJbPUwUpaAvJC950EbKKR3OLoIbgJubjJ2amVppZ8v7S0\nyO67dh/bvj6csUx/E26qJrO1HjG1oU3mlh7XKoGWE8g5orE4tzcdeWRbvqqu+ML+\nWARK4Q5R1FQz52/8d3nURP3dmd+VdbOfL5NUvW4Poc05n0DVGPejErJUs4NtdFjg\nbSX1qU4SmsMdX4YV0/llZnGttwXNPVR5NOaOnwTCOM/ASzWE7U2AojwWDL8UVJPs\nqj2AJWvnU9MlDFCurg8PZUujuOas/RIFIziv3ftUAQKBgQDcgKWRrhhf0ur9cBGy\nSpvJ1dQQ/LowWu35FXGol+RMfzxGHNlPqlsKw2xfzLemsBLTDqK4mrCCwOJNj0O+\nIvaN+TbhNjA5Ts3UZFcD1GGslyUwo3ArxgWdNqMJhhiKTuDEZ7G4IJ7Jd6fMbslv\nsnAr6THMFmSdI18pFAW0W8duMwKBgQDW5u+PbI6tAp/DVGPcdm1LgiGCSDGlfwDY\n/7pBlyWt2SQJB0NHG9+oCQuaiPem1amZdqzNJsHdtN5xKJWBFk9Ws+CZyMOAcR4b\nABAdS2uKGAQJn8NT1t+kc4qRkjgaI1TXbCAYyMFgnCZ3U6C+npGPCcyLhr5FwcY/\nY+pDN3dOIQKBgQC+kk0GgEG+p6rCyVXyErtcEHtNBy/f1OaxjRADVutQFfNA4XQL\nfz9aKRYEIgljfe93C8Ik7ES7bPrpb3Vr4gnXIFmHAW9iSDJqayItRCP6p1LUG505\np9Z4Tp1QAN46wvtNpBUb/s1dcBXNAL8F02FRAiUwrvXcPZLkDNL1UxEkswKBgQCx\nazM4O62HFHWFs7RGHNea0TKM9sFWGoY+oNHKuNh4sJ5Zfc+Dc3WwqtcTnCSpbhh5\nBEshi+/d9Cb5UUIsspiJwjOZgvA0qC7sp56mMM/10GH0+BswqmM0x9cM26TJn4W5\n3CCblZJhCkmPllFNTmhpqPNf9bw8pv/e8cRD/hTXQQKBgQCqGhEmbsk6bx1VUZq9\nE3QmxuvEahgx+BJQoKXHDGtgu5uxx7ACdHB3WFNkyAGB7UHehQ/Tw938ZeOjuoGZ\nWiYFiw175avJ51lDuPDGN9I/bM4fHaQipv6iGNb75w0C1i1Bnax29BIQlN4Ns9gi\nCi6mn9hoJadaes3BblozVkwbTw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "cicd-cloudrun@cicd-cloudrun.iam.gserviceaccount.com",
+  "client_id": "100114096098838086475",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cicd-cloudrun%40cicd-cloudrun.iam.gserviceaccount.com"
+}
