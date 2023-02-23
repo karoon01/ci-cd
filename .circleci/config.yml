@@ -18,7 +18,7 @@ jobs:
       - run:
           name: Run tests
           command: npm test
-  deploy:
+  deploy_staging:
     docker:
       - image: google/cloud-sdk:alpine
     steps:
@@ -56,9 +56,3 @@ workflows:
           filters:
             branches:
               only: staging
-      - deploy_prod:
-          requires:
-            - build_test
-          filters:
-            branches:
-              only: production
