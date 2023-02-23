@@ -17,10 +17,7 @@ jobs:
           override-ci-command: npm install
       - run:
           name: Run tests
-          command: |
-            if [[ ! -z $CIRCLE_PULL_REQUEST ]] ; then
-              npm test
-            fi
+          command: npm test
   deploy:
     docker:
       - image: google/cloud-sdk:alpine
@@ -53,9 +50,15 @@ workflows:
   build_test_deploy:
     jobs:
       - build_test
-      - deploy:
+      - deploy_staging:
           requires:
             - build_test
           filters:
             branches:
-              only: dev
+              only: staging
+      - deploy_prod:
+          requires:
+            - build_test
+          filters:
+            branches:
+              only: production
