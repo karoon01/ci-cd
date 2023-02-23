@@ -17,9 +17,3 @@ describe('third unit test', () => {
     expect(3 === 3).toBe(true)
   })
 })
-
-describe('fourth unit test', () => {
-  test('4 is equal to 4', () => {
-    expect(4 === 4).toBe(true)
-  })
-})
