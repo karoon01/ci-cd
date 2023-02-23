@@ -3,4 +3,3 @@ node_modules
 
 .env
 tmp/*
-gcloud_key.json

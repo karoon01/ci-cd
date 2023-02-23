@@ -11,7 +11,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js",
     "lint": "eslint .",
-    "test": "echo tests completed"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +20,9 @@
     "express": "4.18.2"
   },
   "devDependencies": {
+    "@jest/globals": "^29.4.3",
     "eslint": "8.32.0",
+    "jest": "29.4.3",
     "nodemon": "2.0.20",
     "prettier": "2.8.4"
   }
