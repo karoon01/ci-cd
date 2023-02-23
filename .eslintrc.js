@@ -1,0 +1,15 @@
+module.exports = {
+  parserOptions: {
+    ecmaVersion: 2022,
+  },
+
+  env: {
+    es6: true,
+    'shared-node-browser': true,
+  },
+  extends: ['eslint:recommended', 'prettier'],
+  rules: {
+    semi: ['warn', 'never'],
+    'no-undef': 'off',
+  },
+}
