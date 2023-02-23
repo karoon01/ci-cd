@@ -28,24 +28,52 @@ jobs:
       - run:
           name: Configure gcloud
           command: |
-            echo $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
-            gcloud config set project ${PROJECT_ID}
-            gcloud config set run/region ${REGION}
+            echo $STAGE_GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
+            gcloud config set project ${STAGE_PROJECT_ID}
+            gcloud config set run/region ${STAGE_REGION}
             gcloud auth configure-docker
       - run:
           name: Build and tag Docker image
           command: |
-            docker build -t gcr.io/${PROJECT_ID}/${APP_NAME}:${CIRCLE_SHA1} .
-            docker tag gcr.io/${PROJECT_ID}/${APP_NAME}:${CIRCLE_SHA1} gcr.io/${PROJECT_ID}/${APP_NAME}:latest
+            docker build -t gcr.io/${STAGE_PROJECT_ID}/${STAGE_APP_NAME}:${CIRCLE_SHA1} .
+            docker tag gcr.io/${STAGE_PROJECT_ID}/${STAGE_APP_NAME}:${CIRCLE_SHA1} gcr.io/${STAGE_PROJECT_ID}/${STAGE_APP_NAME}:latest
       - run:
           name: Push Docker image to Container Registry
           command: |
-            docker push gcr.io/${PROJECT_ID}/${APP_NAME}:${CIRCLE_SHA1}
-            docker push gcr.io/${PROJECT_ID}/${APP_NAME}:latest
+            docker push gcr.io/${STAGE_PROJECT_ID}/${STAGE_APP_NAME}:${CIRCLE_SHA1}
+            docker push gcr.io/${STAGE_PROJECT_ID}/${STAGE_APP_NAME}:latest
       - run:
           name: Deploy to Cloud Run
           command: |
-            gcloud run deploy ${APP_NAME} --region ${REGION} --image gcr.io/${PROJECT_ID}/${APP_NAME}:${CIRCLE_SHA1} --platform managed --allow-unauthenticated --project ${PROJECT_ID}
+            gcloud run deploy ${APP_NAME} --region ${STAGE_REGION} --image gcr.io/${STAGE_PROJECT_ID}/${STAGE_APP_NAME}:${CIRCLE_SHA1} --platform managed --allow-unauthenticated --project ${STAGE_PROJECT_ID}
+  deploy_production:
+    docker:
+      - image: google/cloud-sdk:alpine
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run:
+          name: Configure gcloud
+          command: |
+            echo $PROD_GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
+            gcloud config set project ${PROD_PROJECT_ID}
+            gcloud config set run/region ${PROD_REGION}
+            gcloud auth configure-docker
+      - run:
+          name: Build and tag Docker image
+          command: |
+            docker build -t gcr.io/${PROD_PROJECT_ID}/${PROD_APP_NAME}:${CIRCLE_SHA1} .
+            docker tag gcr.io/${PROD_PROJECT_ID}/${PROD_APP_NAME}:${CIRCLE_SHA1} gcr.io/${PROD_PROJECT_ID}/${PROD_APP_NAME}:latest
+      - run:
+          name: Push Docker image to Container Registry
+          command: |
+            docker push gcr.io/${PROD_PROJECT_ID}/${PROD_APP_NAME}:${CIRCLE_SHA1}
+            docker push gcr.io/${PROD_PROJECT_ID}/${PROD_APP_NAME}:latest
+      - run:
+          name: Deploy to Cloud Run
+          command: |
+            gcloud run deploy ${PROD_APP_NAME} --region ${PROD_REGION} --image gcr.io/${PROD_PROJECT_ID}/${PROD_APP_NAME}:${CIRCLE_SHA1} --platform managed --allow-unauthenticated --project ${PROD_PROJECT_ID}
 workflows:
   build_test_deploy:
     jobs:
@@ -56,3 +84,9 @@ workflows:
           filters:
             branches:
               only: staging
+      - deploy_production:
+          requires:
+            - build_test
+          filters:
+            branches:
+              only: production
