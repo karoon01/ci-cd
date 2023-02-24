@@ -168,4 +168,4 @@ workflows:
             - build_test
           filters:
             branches:
-              only: staging
+              only: production
