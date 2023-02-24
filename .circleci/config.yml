@@ -29,6 +29,8 @@ jobs:
   deploy_staging:
     docker:
       - image: google/cloud-sdk:alpine
+    environment:
+      NODE_ENV: staging
     steps:
       - checkout
       - setup_remote_docker:
@@ -55,7 +57,6 @@ jobs:
           command: |
             gcloud run deploy ${STAGE_APP_NAME} --region ${STAGE_REGION} --image gcr.io/${PROJECT_ID}/${STAGE_APP_NAME}:${CIRCLE_SHA1} --platform managed --allow-unauthenticated --project ${PROJECT_ID}
   deploy_client_staging:
-    working_directory: ./client
     docker:
       - image: google/cloud-sdk:alpine
     steps:
@@ -146,12 +147,6 @@ workflows:
       - lint
       - build_test
       - deploy_staging:
-          requires:
-            - build_test
-          filters:
-            branches:
-              only: staging
-      - deploy_client_staging:
           requires:
             - build_test
           filters:
