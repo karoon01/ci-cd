@@ -57,6 +57,7 @@ jobs:
   deploy_client_staging:
     docker:
       - image: google/cloud-sdk:alpine
+    working_directory: /home/circleci/project/client
     steps:
       - checkout
       - setup_remote_docker:
@@ -145,6 +146,12 @@ workflows:
       - lint
       - build_test
       - deploy_staging:
+          requires:
+            - build_test
+          filters:
+            branches:
+              only: staging
+      - deploy_client_staging:
           requires:
             - build_test
           filters:
