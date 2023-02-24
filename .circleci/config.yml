@@ -44,7 +44,8 @@ jobs:
           name: Build and tag Docker image
           command: |
             docker build --build-arg ENV_FILE=.env.staging -t gcr.io/${PROJECT_ID}/${STAGE_APP_NAME}:${CIRCLE_SHA1} .
-            docker tag gcr.io/${PROJECT_ID}/${STAGE_APP_NAME}:${CIRCLE_SHA1} gcr.io/${PROJECT_ID}/${PROD_APP_NAME}:staging gcr.io/${PROJECT_ID}/${STAGE_APP_NAME}:latest
+            docker tag gcr.io/${PROJECT_ID}/${STAGE_APP_NAME}:${CIRCLE_SHA1} gcr.io/${PROJECT_ID}/${PROD_APP_NAME}:staging
+            docker tag gcr.io/${PROJECT_ID}/${STAGE_APP_NAME}:${CIRCLE_SHA1} gcr.io/${PROJECT_ID}/${STAGE_APP_NAME}:latest
       - run:
           name: Push Docker image to Container Registry
           command: |
@@ -100,7 +101,8 @@ jobs:
           name: Build and tag Docker image
           command: |
             docker build --build-arg ENV_FILE=.env.prod -t gcr.io/${PROJECT_ID}/${PROD_APP_NAME}:${CIRCLE_SHA1} .
-            docker tag gcr.io/${PROJECT_ID}/${PROD_APP_NAME}:${CIRCLE_SHA1} gcr.io/${PROJECT_ID}/${PROD_APP_NAME}:production gcr.io/${PROJECT_ID}/${PROD_APP_NAME}:latest
+            docker tag gcr.io/${PROJECT_ID}/${PROD_APP_NAME}:${CIRCLE_SHA1} gcr.io/${PROJECT_ID}/${PROD_APP_NAME}:production
+            docker tag gcr.io/${PROJECT_ID}/${PROD_APP_NAME}:${CIRCLE_SHA1} gcr.io/${PROJECT_ID}/${PROD_APP_NAME}:latest
       - run:
           name: Push Docker image to Container Registry
           command: |
