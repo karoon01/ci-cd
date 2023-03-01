@@ -57,9 +57,10 @@ jobs:
   deploy_client_staging:
     docker:
       - image: google/cloud-sdk:alpine
-    working_directory: /home/circleci/project/client
+    working_directory: ~/project/client
     steps:
-      - checkout
+      - checkout:
+          path: ~/project
       - setup_remote_docker:
           docker_layer_caching: false
       - run:
