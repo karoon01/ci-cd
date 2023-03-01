@@ -181,7 +181,7 @@ workflows:
               only: staging
       - deploy_production_backend:
           requires:
-            - build_test
+            - build_test_backend
           filters:
             branches:
               only: production
