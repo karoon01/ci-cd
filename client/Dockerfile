@@ -10,12 +10,6 @@ WORKDIR /usr/src/app
 # Copying this separately prevents re-running npm install on every code change.
 COPY package*.json ./
 
-# Define a env file variable
-ARG ENV_FILE=.env
-
-# Copy the environment file into the container image
-COPY $ENV_FILE /usr/src/app/.env
-
 # Install dependencies.
 # If you add a package-lock.json speed your build by switching to 'npm ci'.
 # RUN npm ci --only=production
