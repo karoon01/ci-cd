@@ -2,6 +2,9 @@
 # https://hub.docker.com/_/node
 FROM node:18-alpine
 
+# Define a env file variable
+ARG ENV_FILE=.env
+
 # Create and change to the app directory.
 WORKDIR /usr/src/app
 
@@ -9,9 +12,6 @@ WORKDIR /usr/src/app
 # A wildcard is used to ensure both package.json AND package-lock.json are copied.
 # Copying this separately prevents re-running npm install on every code change.
 COPY package*.json ./
-
-# Define a env file variable
-ENV ENV_FILE=.env
 
 # Copy the environment file into the container image
 COPY $ENV_FILE /usr/src/app/.env
