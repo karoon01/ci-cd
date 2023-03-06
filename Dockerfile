@@ -3,7 +3,7 @@
 FROM node:18-alpine
 
 # Define a env file variable
-ARG ENV_FILE
+ARG ENV_FILE=.env
 
 # Create and change to the app directory.
 WORKDIR /usr/src/app

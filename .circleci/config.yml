@@ -43,7 +43,7 @@ jobs:
       - run:
           name: Build and tag Docker image
           command: |
-            docker build --build-arg ENV_FILE=.env.staging -t gcr.io/${PROJECT_ID}/${STAGE_APP_NAME}:${CIRCLE_SHA1} .
+            docker build --build-arg ENV_FILE=.env.prod -t gcr.io/${PROJECT_ID}/${STAGE_APP_NAME}:${CIRCLE_SHA1} .
             docker tag gcr.io/${PROJECT_ID}/${STAGE_APP_NAME}:${CIRCLE_SHA1} gcr.io/${PROJECT_ID}/${STAGE_APP_NAME}:latest
       - run:
           name: Push Docker image to Container Registry
@@ -185,19 +185,19 @@ workflows:
           filters:
             branches:
               only: production
-  build_test_deploy_client:
-    jobs:
-      - lint_client
-      - build_test_client
-      - deploy_staging_client:
-          requires:
-            - build_test_client
-          filters:
-            branches:
-              only: staging
-      - deploy_production_client:
-          requires:
-            - build_test_client
-          filters:
-            branches:
-              only: production
+#  build_test_deploy_client:
+#    jobs:
+#      - lint_client
+#      - build_test_client
+#      - deploy_staging_client:
+#          requires:
+#            - build_test_client
+#          filters:
+#            branches:
+#              only: staging
+#      - deploy_production_client:
+#          requires:
+#            - build_test_client
+#          filters:
+#            branches:
+#              only: production
