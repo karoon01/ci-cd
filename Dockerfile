@@ -12,6 +12,7 @@ COPY package*.json ./
 
 # Define a env file variable
 ARG ENV_FILE=.env
+ENV ENV_FILE=${ENV_FILE:-.env}
 
 # Copy the environment file into the container image
 COPY $ENV_FILE /usr/src/app/.env
